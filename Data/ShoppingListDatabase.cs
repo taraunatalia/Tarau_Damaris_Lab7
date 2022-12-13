@@ -12,6 +12,7 @@ namespace Tarau_Damaris_Lab7.Data
 {
     public class ShoppingListDatabase
     {
+
         readonly SQLiteAsyncConnection _database;
         public ShoppingListDatabase(string dbPath)
         {
@@ -39,22 +40,40 @@ namespace Tarau_Damaris_Lab7.Data
         {
             return _database.Table<Product>().ToListAsync();
         }
-
-        internal Task DeleteShopListAsync(ShopList slist)
+        public Task<int> DeleteListProductAsync(ListProduct listp)
         {
-            throw new NotImplementedException();
+            return _database.DeleteAsync(listp);
+        }
+        public Task<List<ListProduct>> GetListProducts()
+        {
+            return _database.QueryAsync<ListProduct>("select * from ListProduct");
         }
 
-        internal Task SaveShopListAsync(ShopList slist)
+        public Task<List<ShopList>> GetShopListsAsync()
         {
-            throw new NotImplementedException();
+            return _database.Table<ShopList>().ToListAsync();
         }
-
-        internal Task<IEnumerable> GetShopListsAsync()
+        public Task<ShopList> GetShopListAsync(int id)
         {
-            throw new NotImplementedException();
+            return _database.Table<ShopList>()
+            .Where(i => i.ID == id)
+           .FirstOrDefaultAsync();
         }
-
+        public Task<int> SaveShopListAsync(ShopList slist)
+        {
+            if (slist.ID != 0)
+            {
+                return _database.UpdateAsync(slist);
+            }
+            else
+            {
+                return _database.InsertAsync(slist);
+            }
+        }
+        public Task<int> DeleteShopListAsync(ShopList slist)
+        {
+            return _database.DeleteAsync(slist);
+        }
         public Task<int> SaveListProductAsync(ListProduct listp)
         {
             if (listp.ID != 0)
@@ -77,3 +96,4 @@ namespace Tarau_Damaris_Lab7.Data
 
     }
 }
+
