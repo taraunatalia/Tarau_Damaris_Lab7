@@ -11,7 +11,8 @@
             <Editor.Behaviors>
                 <local:ValidationBehaviour />
             </Editor.Behaviors>
-        </Editor>
+        </Editor>
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
